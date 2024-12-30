@@ -8,12 +8,11 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @ControllerAdvice
 public class ControllerExceptionHandler {
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<?> onException(Exception ex){
+    public ResponseEntity<String> onException(Exception ex){
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
     @ExceptionHandler(ConstraintViolationException.class)
@@ -26,7 +25,7 @@ public class ControllerExceptionHandler {
                                 violation.getMessage()
                         )
                 )
-                .collect(Collectors.toList());
+                .toList();
         ValidationErrorMessage errorMessage = new ValidationErrorMessage(violations);
 
         return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
@@ -37,7 +36,7 @@ public class ControllerExceptionHandler {
             MethodArgumentNotValidException e) {
         final List<Violation> violations = e.getBindingResult().getFieldErrors().stream()
                 .map(error -> new Violation(error.getField(), error.getDefaultMessage()))
-                .collect(Collectors.toList());
+                .toList();
         ValidationErrorMessage errorMessage = new ValidationErrorMessage(violations);
 
         return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);

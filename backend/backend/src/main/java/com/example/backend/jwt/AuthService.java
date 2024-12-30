@@ -18,6 +18,7 @@ import java.util.Map;
 @Service
 @RequiredArgsConstructor
 public class AuthService implements LogoutHandler {
+    private static final String NOT_FOUND_MESSAGE = "User is not found";
     private final UserService userService;
     private final JwtProvider jwtProvider;
     private final Map<String, String> refreshStorage = new HashMap<>();
@@ -32,7 +33,7 @@ public class AuthService implements LogoutHandler {
 
     public JwtResponse login(@NonNull JwtRequest authRequest) throws AuthException {
         final RequestUserDTO user = userService.getUserByUsername(authRequest.getUsername())
-                .orElseThrow(() -> new AuthException("User is not found"));
+                .orElseThrow(() -> new AuthException(NOT_FOUND_MESSAGE));
         if (user.getPassword().equals(authRequest.getPassword())) {
             final String accessToken = jwtProvider.generateAccessToken(user);
             final String refreshToken = jwtProvider.generateRefreshToken(user);
@@ -50,7 +51,7 @@ public class AuthService implements LogoutHandler {
             final String saveRefreshToken = refreshStorage.get(username);
             if (saveRefreshToken != null && saveRefreshToken.equals(refreshToken)) {
                 final RequestUserDTO user = userService.getUserByUsername(username)
-                        .orElseThrow(() -> new AuthException("User is not found"));
+                        .orElseThrow(() -> new AuthException(NOT_FOUND_MESSAGE));
                 final String accessToken = jwtProvider.generateAccessToken(user);
                 return new JwtResponse(accessToken, null);
             }
@@ -65,7 +66,7 @@ public class AuthService implements LogoutHandler {
             final String saveRefreshToken = refreshStorage.get(username);
             if (saveRefreshToken != null && saveRefreshToken.equals(refreshToken)) {
                 final RequestUserDTO user = userService.getUserByUsername(username)
-                        .orElseThrow(() -> new AuthException("User is not found"));
+                        .orElseThrow(() -> new AuthException(NOT_FOUND_MESSAGE));
                 final String accessToken = jwtProvider.generateAccessToken(user);
                 final String newRefreshToken = jwtProvider.generateRefreshToken(user);
                 refreshStorage.put(user.getUsername(), newRefreshToken);

@@ -14,11 +14,11 @@ import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class TaskServiceImpl implements TaskService {
+    private final String NOT_FOUND_MESSAGE = "Task not found with id: ";
     private final TaskRepository taskRepository;
     private final UserRepository userRepository;
     private final TaskMapper taskMapper;
@@ -32,7 +32,7 @@ public class TaskServiceImpl implements TaskService {
 
         return tasks.stream()
                 .map(taskMapper::toREQDto)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override
@@ -47,14 +47,14 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public RequestTaskDTO getTaskById(Long id) {
         Task task = taskRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Task not found with id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException(NOT_FOUND_MESSAGE + id));
         return taskMapper.toREQDto(task);
     }
 
     @Override
     public RequestTaskDTO createTask(RequestTaskDTO requestTaskDTO) {
         User user = userRepository.findById(requestTaskDTO.getUser().getId())
-                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + requestTaskDTO.getUser().getId()));
+                .orElseThrow(() -> new ResourceNotFoundException(NOT_FOUND_MESSAGE + requestTaskDTO.getUser().getId()));
 
         Task task = taskMapper.toEntity(requestTaskDTO);
         task.setUser(user);
@@ -66,7 +66,7 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public RequestTaskDTO updateTask(Long id, RequestTaskDTO requestTaskDTO) {
         Task task = taskRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Task not found with id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException(NOT_FOUND_MESSAGE + id));
         task.setTitle(requestTaskDTO.getTitle());
         task.setDescription(requestTaskDTO.getDescription());
         task.setCreateDate(requestTaskDTO.getCreateDate());
@@ -79,7 +79,7 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public void deleteTask(Long id) {
         Task task = taskRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Task not found with id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException(NOT_FOUND_MESSAGE + id));
         taskRepository.delete(task);
 
     }
@@ -87,10 +87,10 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public List<RequestTaskDTO> getTasksByUser(Long userId) {
         userRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userId));
+                .orElseThrow(() -> new ResourceNotFoundException(NOT_FOUND_MESSAGE + userId));
         List<Task> tasks = taskRepository.findByUserId(userId);
         return tasks.stream()
                 .map(taskMapper::toREQDto)
-                .collect(Collectors.toList());
+                .toList();
     }
 }

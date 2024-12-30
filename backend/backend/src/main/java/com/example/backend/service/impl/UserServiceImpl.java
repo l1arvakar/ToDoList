@@ -29,7 +29,7 @@ public class UserServiceImpl  implements UserService {
         }
         return users.stream()
                 .map(userMapper::toREQDto)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override
