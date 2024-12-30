@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { toast } from 'react-toastify'
 import { useNavigate, Link } from "react-router-dom";
 import Cookies from "js-cookie";
 import { getUserByUsername } from '../api/UserService';
@@ -14,18 +15,24 @@ const Login = ({handleAuthenticate}) => {
 
     if (!username) {
       newErrors.login = 'Login is required';
+      toast.error(newErrors.login);
     } else if (!/^[a-zA-Z0-9._-]+$/.test(username)) {
-      newErrors.login = 'Login contains invalid characters';
+      newErrors.login = 'Login must be 3-20 characters long';
+      toast.error(newErrors.login);
     } else if (username.length < 3  || username.length > 20) {
       newErrors.login = 'Login must be 3-20 characters long';
+      toast.error(newErrors.login);
     }
 
     if (!password) {
       newErrors.password = 'Password is required';
+      toast.error(newErrors.password);
     } else if (!/^[a-zA-Z0-9!@#$%^&*(),.?":{}|<>+-]+$/.test(password))  {
       newErrors.password = 'Password contains invalid characters';
+      toast.error(newErrors.password);
     } else if (password.length < 6) {
       newErrors.password = 'Password must be at least 6 characters';
+      toast.error(newErrors.password);
     }
 
     setErrors(newErrors);
@@ -88,7 +95,6 @@ const Login = ({handleAuthenticate}) => {
           placeholder="Enter login"
           autoCapitalize="none"
         />
-        {errors.login && <p className="error">{errors.login}</p>}
         <input
           type="password"
           value={password}
@@ -96,7 +102,6 @@ const Login = ({handleAuthenticate}) => {
             setPassword(e.target.value)}
           placeholder="Enter password"
         />
-        {errors.password && <p className="error">{errors.password}</p>}
         <button className="loginBtn" onClick={handleAuthentication}>Login</button>
         <button className="toRegistration" onClick={goToRegistration}>{'Don\'t have any account? Register now'}</button>
       </div>

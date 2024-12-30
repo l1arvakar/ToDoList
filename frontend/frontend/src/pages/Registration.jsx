@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {useNavigate, Link} from "react-router-dom";
+import { toast } from 'react-toastify'
 
 const Registration = () => {
     const [username, setUsername] = useState('');
@@ -13,18 +14,24 @@ const Registration = () => {
 
         if (!username) {
             newErrors.username = 'Username is required';
+            toast.error(newErrors.username);
         } else if (!/^[a-zA-Z0-9._-]+$/.test(username)) {
             newErrors.username = 'Username contains invalid characters';
+            toast.error(newErrors.username);
         } else if (username.length < 3 || username.length > 20) {
             newErrors.username = 'Username must be 3-20 characters long';
+            toast.error(newErrors.username);
         }
 
         if (!password) {
             newErrors.password = 'Password is required';
+            toast.error(newErrors.password);
         } else if (!/^[a-zA-Z0-9!@#$%^&*(),.?":{}|<>+-]+$/.test(password))  {
             newErrors.password = 'Password contains invalid characters';
+            toast.error(newErrors.password);
         } else if (password.length < 6) {
             newErrors.password = 'Password must be at least 6 characters';
+            toast.error(newErrors.password);
         }
 
         setErrors(newErrors);
@@ -46,16 +53,17 @@ const Registration = () => {
 
             if (!response.ok) {
                 const errorData = await response.text();
-                throw new Error(errorData || 'An error occurred');
+                toast.error(errorData);
+                return;
             }
 
             const data = await response.json();
             console.log('Registration successful:', data);
-            alert("User with\nusername: " + data.username + "\npassword: " + data.password + "\nsuccessfully created");
             navigate('/login');
+            toast.success("User with\nusername: " + data.username + "\npassword: " + data.password + "\nsuccessfully created");
         } catch (error) {
             console.error('Error during registration:', error);
-            alert('Error during registration:' + error);
+            toast.error('Error during registration:' + error);
         }
     };
 
@@ -75,7 +83,6 @@ const Registration = () => {
                                 setUsername(e.target.value)}
                             placeholder="Username"
                         />
-                        {errors.username && <p className="error">{errors.username}</p>}
                         <input
                             type="password"
                             value={password}
@@ -83,7 +90,6 @@ const Registration = () => {
                                 setPassword(e.target.value)}
                             placeholder="Password"
                         />
-                        {errors.password && <p className="error">{errors.password}</p>}
                         <button className="registrationBtn" onClick={handleRegister}>Registration</button>
                     </div>
                 </div>

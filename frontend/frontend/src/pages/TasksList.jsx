@@ -50,7 +50,6 @@ const TaskList = ({ currentPage, isLoggedIn }) => {
       return sortedTasks.sort((a, b) => new Date(b.completeDate) - new Date(a.completeDate));
     }
   
-    // Если нет сортировки, просто возвращаем оригинальный массив
     return sortedTasks;
   };
 
@@ -134,7 +133,7 @@ const TaskList = ({ currentPage, isLoggedIn }) => {
         {filteredTasks?.length > 0 && filteredTasks.map((task) => (
           <Link to={`/tasks/${task.id}`} key={task.id} className="task_table_row">
             <div className="task_table_cell">{task.title}</div>
-            <div className="task_table_cell">{task.description}</div>
+            <div className="task_table_cell task_item_description">{task.description}</div>
             <div className="task_table_cell">{task.status}</div>
             <div className="task_table_cell">{task.createDate}</div>
             <div className="task_table_cell">{task.completeDate}</div>

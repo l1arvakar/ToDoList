@@ -132,8 +132,24 @@ body {
     font-size: 17px;
     color: #ffffff;
     cursor: pointer;
-    
   }
+  .back-button {
+    height: 40px;
+    width: 150px;
+    margin-left: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+    border-radius: 10px;
+    border: none;
+    background-color:#00a7a7;
+    text-align:center;
+    font-size: 17px;
+    color: #ffffff;
+    cursor: pointer;
+  }
+  .back-button:hover:enabled {
+    color:#003636;  
+  } 
   .dropdown_wrapper_button:hover:enabled{
     color:#003636;
   }
@@ -164,39 +180,6 @@ body {
     height: 50px;
     margin: auto;
   }
-  .product_item {
-      width: 215px;
-    height: 300px;
-      background-color: #ecf1f1;
-    padding: 18px;
-      border-radius: 10px;
-  }
-  .product_item_image {
-      border-radius: 10px;
-  }
-  .product_item_first_line {
-      display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-  }
-  .product_item_name {
-      font-size: 20px;
-    margin-top: 5px;
-    margin-bottom: 5px;
-    height: fit-content;
-  }
-  .product_item_category {
-      font-size: 15px;
-    margin-top: 10px;
-    margin-bottom: 5px;
-    height: fit-content;
-  }
-  .product_item_price {
-    margin-top: 10px;
-    margin-bottom: 10px;
-      text-align: end;
-    font-size: 25px;
-  }
   .detailsWrapper {
     position: absolute;
     top: 80px;
@@ -223,6 +206,7 @@ body {
   .details_info_change {
       text-align: center;
       margin: auto;
+      position: relative;
   }
   .details_info_change>input {
     display: flex;
@@ -242,12 +226,15 @@ body {
     border: none;
     background-color: #ffffff;
     font-size: 15px;
+    z-index: 10;
   }
   .custom-menu {
+    position: relative;
     background-color: #ffffff;
-    border: none;
+    border: 2px inset #fcfffc59;
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 15;
   }
   
   .custom-menu .Dropdown-option {
@@ -264,6 +251,21 @@ body {
     background-color: #f9f9f900;
     font-weight: bold;
   }
+  .Dropdown-placeholder {
+    padding: 10px;
+    z-index: 15;
+  }
+
+  .Dropdown-menu {
+    z-index: 15;
+  }
+
+  .task_item_description {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;  
+  }
+
   .details_info_change>button{
     height: 50px;
     width: 370px;
