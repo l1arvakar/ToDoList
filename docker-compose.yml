@@ -11,5 +11,37 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/ToDoList
+      - SPRING_DATASOURCE_USERNAME=vakar
+      - SPRING_DATASOURCE_PASSWORD=vakar1234
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    networks:
+      - todo_network
+
+  frontend:
+    build:
+      context: ./frontend/frontend
+    container_name: react-ui
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    networks:
+      - todo_network
+    environment:
+      - REACT_APP_API_URL=http://backend:8080
+
+networks:
+  todo_network:
+    driver: bridge
+
 volumes:
   postgres_data:
