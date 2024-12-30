@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -41,6 +42,12 @@ public class UserController {
     @GetMapping("/{id}")
     public ResponseEntity<RequestUserDTO> getUserById(@PathVariable @Min(0) Long id) {
         RequestUserDTO user = userService.getUserById(id);
+        return ResponseEntity.ok(user);
+    }
+
+    @GetMapping("/username/{username}")
+    public ResponseEntity<Optional<RequestUserDTO>> getUserByUsername(@PathVariable String username) {
+        Optional<RequestUserDTO> user = userService.getUserByUsername(username);
         return ResponseEntity.ok(user);
     }
 
