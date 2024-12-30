@@ -56,7 +56,8 @@ const Login = ({handleAuthenticate}) => {
 
       if (!response.ok) {
         const errorData = await response.text();
-        throw new Error(errorData || 'An error occurred');
+        toast.error(errorData);
+        return;
       }
 
       const data = await response.json();
@@ -77,7 +78,7 @@ const Login = ({handleAuthenticate}) => {
       navigate("/tasks");
     } catch (error) {
       console.error('Error during login:', error);
-      alert('Error during login:' + error);
+      toast.error('Error during login:' + error);
     }
   };
 
