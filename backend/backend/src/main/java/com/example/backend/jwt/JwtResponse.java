@@ -7,7 +7,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class JwtResponse {
-    private static final String type = "Bearer";
+    private static final String TYPE = "Bearer";
 
     @NotBlank(message = "Missing access token")
     private String accessToken;

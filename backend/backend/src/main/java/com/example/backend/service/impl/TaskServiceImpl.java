@@ -18,7 +18,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class TaskServiceImpl implements TaskService {
-    private final String NOT_FOUND_MESSAGE = "Task not found with id: ";
+    private static final String NOT_FOUND_MESSAGE = "Task not found with id: ";
     private final TaskRepository taskRepository;
     private final UserRepository userRepository;
     private final TaskMapper taskMapper;
